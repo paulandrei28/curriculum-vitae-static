@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ curriculum_vitae.name }} | Curriculum Vitae</title>
+    <link rel="stylesheet" href="static/styles/curriculum_vitae_styles.css">
+    <link rel="stylesheet" href="static/styles/wordle_game.css">
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SQRZ1S1G62"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-SQRZ1S1G62');
+    </script>
+</head>
+<body>
+    <div class="page-shell">
+        <main class="curriculum-vitae-layout">
+            <section class="hero-panel">
+                <div class="hero-copy">
+                    <p class="eyebrow">Curriculum Vitae</p>
+                    <h1>{{ curriculum_vitae.name }}</h1>
+                    <p class="headline">{{ curriculum_vitae.headline }}</p>
+                    <p class="summary">{{ curriculum_vitae.summary }}</p>
+
+                    <div class="contact-grid">
+                        <a href="mailto:{{ curriculum_vitae.email }}">{{ curriculum_vitae.email }}</a>
+                        <a href="tel:{{ curriculum_vitae.phone | replace(' ', '') }}">{{ curriculum_vitae.phone }}</a>
+                        <span>{{ curriculum_vitae.location }}</span>
+                    </div>
+
+                    <div class="action-row">
+                        <a class="primary-button" href="static/documents/Paul_Sipos_CV.pdf" download>Download PDF</a>
+                        <a class="secondary-button" href="{{ curriculum_vitae.github }}" target="_blank" rel="noreferrer">GitHub</a>
+                        <a class="secondary-button" href="{{ curriculum_vitae.linkedin }}" target="_blank" rel="noreferrer">LinkedIn</a>
+                    </div>
+                </div>
+
+                <aside class="hero-card">
+                    <h2>Professional Focus</h2>
+                    <ul>
+                        {% for item in curriculum_vitae.highlights %}
+                            <li>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                </aside>
+            </section>
+
+            <section class="tabs-panel">
+                <div class="tab-controls" role="tablist" aria-label="Curriculum vitae sections">
+                    <button class="tab-button is-active" data-tab-target="experience" type="button">Experience</button>
+                    <button class="tab-button" data-tab-target="projects" type="button">Projects</button>
+                    <button class="tab-button" data-tab-target="skills" type="button">Skills</button>
+                    <button class="tab-button" data-tab-target="education" type="button">Education</button>
+                </div>
+
+                <section class="tab-section is-active" id="experience">
+                    <div class="content-grid">
+                        {% for item in curriculum_vitae.experience %}
+                            <article class="content-card timeline-card">
+                                <div class="card-topline">
+                                    <span class="period">{{ item.period }}</span>
+                                </div>
+                                <h3>{{ item.role }}</h3>
+                                <p class="muted">{{ item.company }}</p>
+                                <ul>
+                                    {% for detail in item.details %}
+                                        <li>{{ detail }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </article>
+                        {% endfor %}
+                    </div>
+                </section>
+
+                <section class="tab-section" id="projects">
+                    <div class="content-grid projects-grid">
+                        {% for item in curriculum_vitae.projects %}
+                            <article class="content-card project-card">
+                                <div class="project-header">
+                                    <div>
+                                        <h3>{{ item.name }}</h3>
+                                        <p class="tagline">{{ item.stack }}</p>
+                                    </div>
+                                    <a class="mini-link" href="{{ item.repo_url }}" target="_blank" rel="noreferrer">Open Repo</a>
+                                </div>
+                                <p>{{ item.description }}</p>
+                                <ul>
+                                    {% for detail in item.details %}
+                                        <li>{{ detail }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </article>
+                        {% endfor %}
+                    </div>
+                    
+                    {% if curriculum_vitae.learning_projects %}
+                    <div class="learning-projects-section">
+                        <h2>Learning & Practice Projects</h2>
+                        <div class="content-grid projects-grid">
+                            {% for item in curriculum_vitae.learning_projects %}
+                                <article class="content-card project-card">
+                                    <div class="project-header">
+                                        <div>
+                                            <h3>{{ item.name }}</h3>
+                                            <p class="tagline">{{ item.stack }}</p>
+                                        </div>
+                                        <a class="mini-link" href="{{ item.repo_url }}" target="_blank" rel="noreferrer">Open Repo</a>
+                                    </div>
+                                    <p>{{ item.description }}</p>
+                                    <ul>
+                                        {% for detail in item.details %}
+                                            <li>{{ detail }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </article>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </section>
+
+                <section class="tab-section" id="skills">
+                    <div class="skills-grid">
+                        {% for category, values in curriculum_vitae.skills %}
+                            <article class="content-card">
+                                <h3>{{ category }}</h3>
+                                <div class="pill-group">
+                                    {% for value in values %}
+                                        <span class="skill-pill">{{ value }}</span>
+                                    {% endfor %}
+                                </div>
+                            </article>
+                        {% endfor %}
+                    </div>
+                </section>
+
+                <section class="tab-section" id="education">
+                    <div class="content-grid">
+                        {% for item in curriculum_vitae.education %}
+                            <article class="content-card">
+                                <div class="card-topline">
+                                    <span class="period">{{ item.period }}</span>
+                                </div>
+                                <h3>{{ item.institution }}</h3>
+                                <ul>
+                                    {% for detail in item.details %}
+                                        <li>{{ detail }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </article>
+                        {% endfor %}
+                    </div>
+                </section>
+            </section>
+        </main>
+    </div>
+
+    <!-- Wordle Game Easter Egg -->
+    <button id="wordle-toggle-button" class="wordle-toggle-btn" title="Play Wordle">🎮</button>
+    
+    <div id="wordle-game-modal" class="wordle-modal">
+        <div class="wordle-game-container">
+            <div class="wordle-header">
+                <h2>If you are here, test your Wordle skills</h2>
+                <button id="wordle-close-button" class="wordle-close-btn" aria-label="Close game">&times;</button>
+            </div>
+            
+            <div class="wordle-content">
+                <div id="wordle-board" class="wordle-board"></div>
+                
+                <div class="wordle-keyboard">
+                    <div class="keyboard-row" id="keyboard-row-1"></div>
+                    <div class="keyboard-row" id="keyboard-row-2"></div>
+                    <div class="keyboard-row" id="keyboard-row-3"></div>
+                </div>
+                
+                <div id="wordle-message" class="wordle-message"></div>
+            </div>
+            
+            <button id="wordle-restart-button" class="wordle-restart-btn" style="display: none;">Play Again</button>
+        </div>
+    </div>
+
+    <script src="static/scripts/curriculum_vitae_tabs.js"></script>
+    <script src="static/scripts/wordle_game.js"></script>
+</body>
+</html>
