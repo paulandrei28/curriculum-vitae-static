@@ -39,7 +39,7 @@ npm run build
 npm run preview
 ```
 
-Open http://127.0.0.1:8080.
+Open http://127.0.0.1:8000.
 
 ## Edit Workflow
 
@@ -68,3 +68,4 @@ Cloudflare Pages serves static files globally with edge caching and high availab
 
 - No backend runtime is required
 - Wordle analytics uses GA4 only (no backend event endpoint)
+- Wordle accepts only real 5-letter words as guesses

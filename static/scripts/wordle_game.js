@@ -31,6 +31,8 @@ class WordleGame {
         this.maxGuesses = 6;
         this.maxLetters = 5;
         this.keyboard = "QWERTYUIOPASDFGHJKLZXCVBNM";
+        this.validWordCache = new Map();
+        this.isValidatingGuess = false;
         
         this.boardEl = document.getElementById("wordle-board");
         this.messageEl = document.getElementById("wordle-message");
@@ -171,9 +173,13 @@ class WordleGame {
         this.renderBoard();
     }
     
-    handleEnter() {
+    async handleEnter() {
         if (this.gameOver) {
             this.initializeGame();
+            return;
+        }
+
+        if (this.isValidatingGuess) {
             return;
         }
         
@@ -185,10 +191,29 @@ class WordleGame {
             }, 1500);
             return;
         }
+
+        const guess = this.currentGuess;
+        this.isValidatingGuess = true;
+        this.messageEl.textContent = "Checking word...";
+        this.messageEl.style.color = "#a3a3a3";
+
+        const isRealWord = await this.isValidWord(guess);
+        this.isValidatingGuess = false;
+
+        if (!isRealWord) {
+            this.messageEl.textContent = "Please enter a real 5-letter word.";
+            this.messageEl.style.color = "#f87171";
+            setTimeout(() => {
+                if (!this.gameOver) {
+                    this.messageEl.textContent = "";
+                }
+            }, 1800);
+            return;
+        }
         
-        this.guesses.push(this.currentGuess);
+        this.guesses.push(guess);
         
-        if (this.currentGuess === this.word) {
+        if (guess === this.word) {
             this.won = true;
             this.gameOver = true;
             this.messageEl.textContent = "You won! Great job!";
@@ -207,6 +232,38 @@ class WordleGame {
         this.currentGuess = "";
         this.renderBoard();
         this.updateKeyboardState();
+    }
+
+    async isValidWord(word) {
+        if (this.validWordCache.has(word)) {
+            return this.validWordCache.get(word);
+        }
+
+        // Always allow words from the playable answer bank.
+        if (WORD_BANK.includes(word)) {
+            this.validWordCache.set(word, true);
+            return true;
+        }
+
+        try {
+            const response = await fetch(
+                `https://api.dictionaryapi.dev/api/v2/entries/en/${word.toLowerCase()}`
+            );
+
+            if (!response.ok) {
+                this.validWordCache.set(word, false);
+                return false;
+            }
+
+            const data = await response.json();
+            const isValid = Array.isArray(data) && data.length > 0;
+            this.validWordCache.set(word, isValid);
+            return isValid;
+        } catch (error) {
+            // Network failures should not crash gameplay.
+            this.validWordCache.set(word, false);
+            return false;
+        }
     }
     
     getLetterFeedback(guess, index) {
