@@ -5,7 +5,7 @@
   "description": "Static build of the curriculum vitae site with identical layout and behavior.",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "preview": "npx --yes http-server . -p 8080 -c-1"
+    "preview": "npx --yes http-server dist -p 8080 -c-1"
   },
   "dependencies": {
     "nunjucks": "^3.2.4"

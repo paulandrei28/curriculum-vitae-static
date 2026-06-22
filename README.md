@@ -13,10 +13,10 @@ Pure static version of the CV website with the same layout, behavior, Wordle gam
 
 ## Project Structure
 
-- `index.html`: generated static page
+- `dist/`: generated deploy-ready static site output
 - `src/data/curriculum_vitae.json`: editable CV content source
 - `src/templates/index.template.html`: template used at build time
-- `scripts/build.mjs`: build script that generates `index.html`
+- `scripts/build.mjs`: build script that generates `dist/index.html`
 - `static/`: styles, scripts, assets, and PDF
 
 ## Local Usage
@@ -52,7 +52,7 @@ Open http://127.0.0.1:8080.
 1. Push this project to a GitHub repository
 2. In Cloudflare Pages, create a new project and connect the repository
 3. Build command: `npm run build`
-4. Build output directory: `/`
+4. Build output directory: `dist`
 5. Deploy
 
 Cloudflare Pages serves static files globally with edge caching and high availability.
