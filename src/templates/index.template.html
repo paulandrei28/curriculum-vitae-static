@@ -59,19 +59,43 @@
                 <section class="tab-section is-active" id="experience">
                     <div class="content-grid">
                         {% for item in curriculum_vitae.experience %}
-                            <article class="content-card timeline-card">
-                                <div class="card-topline">
-                                    <span class="period">{{ item.period }}</span>
-                                </div>
-                                <h3>{{ item.role }}</h3>
-                                <p class="muted">{{ item.company }}</p>
-                                <ul>
-                                    {% for detail in item.details %}
-                                        <li>{{ detail }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </article>
+                            {% if loop.first %}
+                                <article class="content-card timeline-card">
+                                    <div class="card-topline">
+                                        <span class="period">{{ item.period }}</span>
+                                    </div>
+                                    <h3>{{ item.role }}</h3>
+                                    <p class="muted">{{ item.company }}</p>
+                                    <ul>
+                                        {% for detail in item.details %}
+                                            <li>{{ detail }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </article>
+                            {% endif %}
                         {% endfor %}
+                    </div>
+
+                    <div class="experience-internships-section">
+                        <h2>Internships</h2>
+                        <div class="content-grid">
+                            {% for item in curriculum_vitae.experience %}
+                                {% if not loop.first %}
+                                    <article class="content-card timeline-card">
+                                        <div class="card-topline">
+                                            <span class="period">{{ item.period }}</span>
+                                        </div>
+                                        <h3>{{ item.role }}</h3>
+                                        <p class="muted">{{ item.company }}</p>
+                                        <ul>
+                                            {% for detail in item.details %}
+                                                <li>{{ detail }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </article>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
                     </div>
                 </section>
 

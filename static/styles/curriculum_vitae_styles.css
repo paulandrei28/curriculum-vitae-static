@@ -236,6 +236,22 @@ h1 {
     display: block;
 }
 
+.learning-projects-section,
+.experience-internships-section {
+    margin-top: 42px;
+    padding-top: 34px;
+    border-top: 3px solid rgba(255, 255, 255, 0.75);
+}
+
+.learning-projects-section h2,
+.experience-internships-section h2 {
+    margin: 0 0 34px;
+    font-size: clamp(1.8rem, 2.35vw, 2.6rem);
+    font-weight: 700;
+    text-align: center;
+    color: rgba(157, 176, 202, 0.5);
+}
+
 .content-grid,
 .skills-grid,
 .projects-grid {
@@ -362,6 +378,19 @@ h1 {
 
     .mini-link {
         white-space: normal;
+    }
+
+    .learning-projects-section,
+    .experience-internships-section {
+        margin-top: 30px;
+        padding-top: 24px;
+        border-top-width: 2px;
+    }
+
+    .learning-projects-section h2,
+    .experience-internships-section h2 {
+        margin-bottom: 24px;
+        font-size: clamp(1.45rem, 4.2vw, 1.9rem);
     }
 }
 
